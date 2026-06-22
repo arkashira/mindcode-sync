@@ -1,12 +1,12 @@
 # Mindcode Sync
-A VSCode extension for running the architecture wizard.
+Mindcode Sync is a tool that suggests improvements to your code based on the project plan.
 
-## Features
-* Registers a command `mindcode.sync.architecture` to open the wizard
-* Renders the wizard UI in the VSCode webview
-* Persists user selections to the workspace folder
+## Usage
+1. Create a `MindcodeSync` object with your project plan.
+2. Call `analyze_project_plan` to analyze the project plan and generate suggestions.
+3. Call `rank_suggestions` to rank the suggestions based on relevance and potential impact.
+4. Call `get_suggestions` to retrieve the ranked suggestions.
+5. Call `integrate_suggested_changes` to integrate the suggested changes into your code.
 
-## Installation
-1. Clone the repository
-2. Run `poetry install` to install dependencies
-3. Run `poetry run pytest` to run tests
+## Testing
+Run `pytest` to execute the tests.

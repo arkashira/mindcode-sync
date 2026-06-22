@@ -1,40 +1,42 @@
 import json
-import os
 from dataclasses import dataclass
-from typing import Dict
+from typing import List
 
 @dataclass
-class ArchitectureWizardConfig:
-    selections: Dict[str, str]
+class CodeSuggestion:
+    suggestion: str
+    relevance: int
+    impact: int
 
 class MindcodeSync:
-    def __init__(self, workspace_folder: str):
-        self.workspace_folder = workspace_folder
-        self.config_file = os.path.join(workspace_folder, 'mindcode_sync_config.json')
+    def __init__(self, project_plan: str):
+        self.project_plan = project_plan
+        self.suggestions = []
 
-    def register_command(self):
-        return 'mindcode.sync.architecture'
+    def analyze_project_plan(self):
+        # Simple analysis for demonstration purposes
+        if "efficiency" in self.project_plan:
+            self.suggestions.append(CodeSuggestion("Use caching", 8, 6))
+            self.suggestions.append(CodeSuggestion("Optimize loops", 7, 5))
+        if "reliability" in self.project_plan:
+            self.suggestions.append(CodeSuggestion("Add error handling", 9, 8))
+            self.suggestions.append(CodeSuggestion("Implement logging", 6, 4))
 
-    def open_wizard(self):
-        # Render wizard UI in VSCode webview
-        # For simplicity, assume the UI is a simple JSON object
-        ui_config = {
-            'title': 'Architecture Wizard',
-            'fields': [
-                {'name': 'field1', 'type': 'text'},
-                {'name': 'field2', 'type': 'checkbox'}
-            ]
-        }
-        return ui_config
+    def rank_suggestions(self):
+        self.suggestions.sort(key=lambda x: (x.relevance, x.impact), reverse=True)
 
-    def persist_selections(self, selections: Dict[str, str]):
-        config = ArchitectureWizardConfig(selections)
-        with open(self.config_file, 'w') as f:
-            json.dump({'selections': config.selections}, f)
+    def get_suggestions(self):
+        return self.suggestions
 
-    def load_selections(self) -> Dict[str, str]:
-        if not os.path.exists(self.config_file):
-            return {}
-        with open(self.config_file, 'r') as f:
-            config = json.load(f)
-        return config.get('selections', {})
+    def integrate_suggested_changes(self, code: str, suggestion: CodeSuggestion):
+        # Simple integration for demonstration purposes
+        if suggestion.suggestion == "Use caching":
+            return code + "\n# Added caching"
+        elif suggestion.suggestion == "Optimize loops":
+            return code + "\n# Optimized loops"
+        elif suggestion.suggestion == "Add error handling":
+            return code + "\n# Added error handling"
+        elif suggestion.suggestion == "Implement logging":
+            return code + "\n# Implemented logging"
+        else:
+            return code
